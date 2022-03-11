@@ -19,6 +19,7 @@ from robot.model import ModelModifier
 from robot.output import LOGGER
 from robot.result import ExecutionResult, Result
 
+from .monitorlogwriter import MonitorLogWriter
 from .jsmodelbuilders import JsModelBuilder
 from .logreportwriters import LogWriter, ReportWriter
 from .xunitwriter import XUnitWriter
@@ -57,6 +58,8 @@ class ResultWriter:
             self._write_output(results.result, settings.output)
         if settings.xunit:
             self._write_xunit(results.result, settings.xunit)
+        if settings.monitor_log:
+            self._write_monitor_log(results.result, settings.monitor_log)
         if settings.log:
             config = dict(settings.log_config,
                           minLevel=results.js_result.min_level)
@@ -72,6 +75,9 @@ class ResultWriter:
 
     def _write_xunit(self, result, path):
         self._write('XUnit', XUnitWriter(result).write, path)
+
+    def _write_monitor_log(self, result, path):
+        self._write('MonitorLog', MonitorLogWriter(result).write, path)
 
     def _write_log(self, js_result, path, config):
         self._write('Log', LogWriter(js_result).write, path, config)

@@ -135,6 +135,7 @@ Options
  -l --log file            HTML log file. Can be disabled by giving a special
                           name `NONE`. Default: log.html
                           Examples: `--log mylog.html`, `-l none`
+ -m --monitorlog file     Writes results in monitor-style log files
  -r --report file         HTML report file. Can be disabled with `NONE`
                           similarly as --log. Default: report.html
  -x --xunit file          xUnit compatible result file. Not created unless this

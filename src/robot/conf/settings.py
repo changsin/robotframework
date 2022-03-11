@@ -49,6 +49,7 @@ class _BaseSettings:
                  'Log'              : ('log', 'log.html'),
                  'Report'           : ('report', 'report.html'),
                  'XUnit'            : ('xunit', None),
+                 'MonitorLog'       : ('monitorlog', 'robot_monitor.log'),
                  'SplitLog'         : ('splitlog', False),
                  'TimestampOutputs' : ('timestampoutputs', False),
                  'LogTitle'         : ('logtitle', None),
@@ -70,7 +71,7 @@ class _BaseSettings:
                  'PythonPath'       : ('pythonpath', []),
                  'StdOut'           : ('stdout', None),
                  'StdErr'           : ('stderr', None)}
-    _output_opts = ['Output', 'Log', 'Report', 'XUnit', 'DebugFile']
+    _output_opts = ['Output', 'Log', 'MonitorLog', 'Report', 'XUnit', 'DebugFile']
 
     def __init__(self, options=None, **extra_options):
         self.start_timestamp = format_time(time.time(), '', '-', '')
@@ -243,6 +244,8 @@ class _BaseSettings:
             return extension
         if file_type in ['Output', 'XUnit']:
             return '.xml'
+        if file_type in ['MonitorLog']:
+            return '.log'
         if file_type in ['Log', 'Report']:
             return '.html'
         if file_type == 'DebugFile':
@@ -384,6 +387,10 @@ class _BaseSettings:
     @property
     def xunit(self):
         return self['XUnit']
+
+    @property
+    def monitor_log(self):
+        return self['MonitorLog']
 
     @property
     def log_level(self):
