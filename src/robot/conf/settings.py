@@ -49,7 +49,10 @@ class _BaseSettings:
                  'Log'              : ('log', 'log.html'),
                  'Report'           : ('report', 'report.html'),
                  'XUnit'            : ('xunit', None),
-                 'MonitorLog'       : ('monitorlog', 'robot_monitor.log'),
+                 'AzureLog'         : ('azurelog', 'azure_log.log'),
+                 'Customer_ID'      : ('customer_id', None),
+                 'Shared_Key'       : ('shared_key', None),
+                 'Log_Type'         : ('log_type', None),
                  'SplitLog'         : ('splitlog', False),
                  'TimestampOutputs' : ('timestampoutputs', False),
                  'LogTitle'         : ('logtitle', None),
@@ -71,7 +74,7 @@ class _BaseSettings:
                  'PythonPath'       : ('pythonpath', []),
                  'StdOut'           : ('stdout', None),
                  'StdErr'           : ('stderr', None)}
-    _output_opts = ['Output', 'Log', 'MonitorLog', 'Report', 'XUnit', 'DebugFile']
+    _output_opts = ['Output', 'Log', 'Report', 'XUnit', 'DebugFile']
 
     def __init__(self, options=None, **extra_options):
         self.start_timestamp = format_time(time.time(), '', '-', '')
@@ -244,7 +247,7 @@ class _BaseSettings:
             return extension
         if file_type in ['Output', 'XUnit']:
             return '.xml'
-        if file_type in ['MonitorLog']:
+        if file_type in ['AzureLog']:
             return '.log'
         if file_type in ['Log', 'Report']:
             return '.html'
@@ -389,8 +392,20 @@ class _BaseSettings:
         return self['XUnit']
 
     @property
-    def monitor_log(self):
-        return self['MonitorLog']
+    def azure_log(self):
+        return self['AzureLog']
+
+    @property
+    def customer_id(self):
+        return self['Customer_ID']
+
+    @property
+    def shared_key(self):
+        return self['Shared_Key']
+
+    @property
+    def log_type(self):
+        return self['Log_Type']
 
     @property
     def log_level(self):
