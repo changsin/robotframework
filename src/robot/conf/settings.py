@@ -49,7 +49,7 @@ class _BaseSettings:
                  'Log'              : ('log', 'log.html'),
                  'Report'           : ('report', 'report.html'),
                  'XUnit'            : ('xunit', None),
-                 'AzureLog'         : ('azurelog', 'azure_log.log'),
+                 'AzureLog'         : ('azurelog', None),
                  'Customer_ID'      : ('customer_id', None),
                  'Shared_Key'       : ('shared_key', None),
                  'Log_Type'         : ('log_type', None),

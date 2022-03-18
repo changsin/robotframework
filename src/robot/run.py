@@ -172,6 +172,10 @@ Options
  -l --log file            HTML log file. Can be disabled by giving a special
                           value `NONE`. Default: log.html
                           Examples: `--log mylog.html`, `-l NONE`
+ -a --azurelog file       Writes results to Azure Log Analytics
+    --customer_id <id>    Log Analytics workspace ID
+    --shared_key <key>    the primary or the secondary Connected Sources client authentication key
+    --log_type <type>     Log Analytics custom log type
  -r --report file         HTML report file. Can be disabled with `NONE`
                           similarly as --log. Default: report.html
  -x --xunit file          xUnit compatible result file. Not created unless this
