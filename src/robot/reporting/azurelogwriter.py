@@ -56,17 +56,10 @@ class AzureLogWriterVisitor(ResultVisitor):
     def __init__(self, log_writer, azure_publisher):
         self._writer = log_writer
         self.azure_publisher = azure_publisher
+        self.testcases = []
 
     def start_suite(self, suite):
-        tests, failures, skipped = self._get_stats(suite.statistics)
-        attrs = {"name": suite.name,
-                 "tests": tests,
-                 "failures": failures,
-                 "skipped": skipped,
-                 "time": self._time_as_seconds(suite.elapsedtime),
-                 "timestamp": self._starttime_to_isoformat(suite.starttime)}
-        self._writer.info('testsuite {}'.format(json.dumps([attrs])))
-        self.azure_publisher.post_data(json.dumps([attrs]), self.azure_publisher.log_type)
+        pass
 
     def _get_stats(self, statistics):
         return (
@@ -76,19 +69,32 @@ class AzureLogWriterVisitor(ResultVisitor):
         )
 
     def end_suite(self, suite):
-        pass
+        tests, failures, skipped = self._get_stats(suite.statistics)
+        attrs = {"name": suite.name,
+                 "tests": tests,
+                 "failures": failures,
+                 "skipped": skipped,
+                 "time": self._time_as_seconds(suite.elapsedtime),
+                 "timestamp": self._starttime_to_isoformat(suite.starttime),
+                 "testcases": self.testcases}
+        self._writer.info('testsuite {}'.format(json.dumps(attrs)))
+        self.azure_publisher.post_data(json.dumps([attrs]), self.azure_publisher.log_type)
 
     def visit_test(self, test):
-        self._writer.info('testcase: {}'.format(
-                           {'classname': test.parent.longname,
-                            'name': test.name,
-                            'time': self._time_as_seconds(test.elapsedtime)}))
+        message = test.message
         if test.failed:
-            self._writer.info('failure: {}'.format({'message': test.message,
-                                                   'type': 'AssertionError'}))
-        if test.skipped:
-            self._writer.info('skipped: {}'.format({'message': test.message,
-                                                   'type': 'SkipExecution'}))
+            message += ': AssertionError'
+        elif test.skipped:
+            message += ': SkipExecution'
+
+        testcase = {
+            'classname': test.parent.longname,
+            'name': test.name,
+            'time': self._time_as_seconds(test.elapsedtime),
+            'message': test.message
+        }
+        self._writer.info(testcase)
+        self.testcases.append(testcase)
 
     def _time_as_seconds(self, millis):
         return '{:.3f}'.format(millis / 1000)
