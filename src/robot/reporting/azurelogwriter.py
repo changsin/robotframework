@@ -83,15 +83,15 @@ class AzureLogWriterVisitor(ResultVisitor):
     def visit_test(self, test):
         message = test.message
         if test.failed:
-            message += ': AssertionError'
+            message = 'AssertionError: {}'.format(test.message)
         elif test.skipped:
-            message += ': SkipExecution'
+            message = ': SkipExecution: {}'.format(test.message)
 
         testcase = {
             'classname': test.parent.longname,
             'name': test.name,
             'time': self._time_as_seconds(test.elapsedtime),
-            'message': test.message
+            'message': message
         }
         self._writer.info(testcase)
         self.testcases.append(testcase)
